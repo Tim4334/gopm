@@ -1,4 +1,4 @@
-package env
+package vars
 
 const (
 	GOPM string = ""

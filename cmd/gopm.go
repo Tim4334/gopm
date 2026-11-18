@@ -1,7 +1,10 @@
 package cmd
 
 import (
-	"Tim4334/gopm/cmd/env"
+	"Tim4334/gopm/cmd/vars"
+	b "Tim4334/gopm/internal/build"
+	i "Tim4334/gopm/internal/init"
+	l "Tim4334/gopm/internal/lint"
 	"fmt"
 	"os"
 
@@ -10,14 +13,50 @@ import (
 
 var (
 	GopmCmd = &cobra.Command{
-		Use: env.GOPM,
-		Short: env.GOPM_SHORT,
-		Long: env.GOPM_LONG,
+		Use:   vars.GOPM,
+		Short: vars.GOPM_SHORT,
+		Long:  vars.GOPM_LONG,
+	}
+	InitCmd = &cobra.Command{
+		Use:   vars.INIT,
+		Short: vars.INIT_SHORT,
+		Long:  vars.INIT_LONG,
+		RunE: func(cmd *cobra.Command, args []string) error {
+			err := i.Init(cmd, args)
+			if err != nil {
+				return err
+			}
+			return nil
+		},
+	}
+	BuildCmd = &cobra.Command{
+		Use:   vars.BUILD,
+		Short: vars.BUILD_SHORT,
+		Long:  vars.BUILD_LONG,
+		RunE: func(cmd *cobra.Command, args []string) error {
+			err := b.Build(cmd, args)
+			if err != nil {
+				return err
+			}
+			return nil
+		},
+	}
+	LintCmd = &cobra.Command{
+		Use:   vars.LINT,
+		Short: vars.LINT_SHORT,
+		Long:  vars.LINT_LONG,
+		RunE: func(cmd *cobra.Command, args []string) error {
+			err := l.Lint(cmd, args)
+			if err != nil {
+				return err
+			}
+			return nil
+		},
 	}
 )
 
 func init() {
-	GopmCmd.AddCommand(InitCmd,BuildCmd,LintCmd)
+	GopmCmd.AddCommand(InitCmd, BuildCmd, LintCmd)
 }
 
 func Execute() {
